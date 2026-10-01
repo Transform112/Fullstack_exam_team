@@ -114,7 +114,7 @@ export function ShareKit({ url, recipientName, slug, qrCode }: ShareKitProps) {
       </div>
 
       <div className="flex flex-col items-center gap-3 rounded-card border border-border bg-canvas p-4">
-        <div ref={qrBoxRef} className="rounded-xl bg-white p-2">
+        <div ref={qrBoxRef} className="max-w-full rounded-xl bg-white p-2 [&_canvas]:max-w-full [&_canvas]:!h-auto">
           <QRCodeCanvas
             value={url}
             size={256}

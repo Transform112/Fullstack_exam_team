@@ -333,7 +333,9 @@ export function Wizard({ initialPage, mode, userId: initialUserId }: WizardProps
     (bodyFn: () => Record<string, unknown>, stepFn: () => number): RetryableTask => {
       const task: RetryableTask = {
         run: async () => {
-          const result = await applySave(bodyFn(), stepFn());
+          const body = bodyFn();
+          if (pageIdRef.current) body.rev = revRef.current;
+          const result = await applySave(body, stepFn());
           if (pageIdRef.current === result.id) {
             dirtyRef.current = false;
             setSaveState("saved");

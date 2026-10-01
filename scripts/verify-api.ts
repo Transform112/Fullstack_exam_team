@@ -8,11 +8,17 @@
 // It logs in with the seeded accounts, walks a full draft -> media -> publish -> public
 // view -> wishes -> lock/password -> admin disable/enable cycle, checks the exact
 // response shapes and the security rules, then deletes everything it created.
+import mongoose from "mongoose";
 import { cloudinary } from "../lib/cloudinary";
+import { connectDB } from "../lib/db";
+import { User } from "../models/User";
 
 const BASE = (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").replace(/\/$/, "");
 const ORIGIN = BASE;
 const CREATOR = { email: "creator@demo.com", password: "Creator@123" };
+const createdPageIds = new Set<string>();
+const uploadedPublicIds = new Set<string>();
+const temporaryEmails = new Set<string>();
 
 let passed = 0;
 let failed = 0;
@@ -33,6 +39,7 @@ function section(title: string) {
 
 // --- Minimal cookie-aware client -------------------------------------------------------
 type Session = { name: string; cookies: Map<string, string> };
+let cleanupCreator: Session | undefined;
 
 function session(name: string): Session {
   return { name, cookies: new Map() };
@@ -57,11 +64,22 @@ async function call<T = any>(
   if (origin) headers["Origin"] = origin;
   if (opts.session && opts.session.cookies.size) headers["Cookie"] = cookieHeader(opts.session);
 
-  const res = await fetch(`${BASE}${path}`, {
-    method: opts.method ?? "GET",
-    headers,
-    body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
-  });
+  const method = opts.method ?? "GET";
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      method,
+      headers,
+      body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
+      signal: AbortSignal.timeout(20_000),
+    });
+  } catch (err) {
+    const error = err as Error & { cause?: { code?: string; message?: string } };
+    throw new Error(
+      `${method} ${path} transport failed${error.cause?.code ? ` (${error.cause.code})` : ""}: ${error.cause?.message ?? error.message}`,
+      { cause: err },
+    );
+  }
 
   // Keep the session cookie jar in sync (auth token, visitor id, unlock token).
   const setCookies: string[] =
@@ -82,6 +100,47 @@ async function call<T = any>(
 }
 
 const newVisitorSession = () => session(`visitor-${Math.random().toString(36).slice(2, 7)}`);
+
+async function cleanup() {
+  try {
+    for (const id of createdPageIds) {
+      try {
+        const removed = await call(`/api/v1/pages/${id}`, {
+          method: "DELETE",
+          session: cleanupCreator,
+        });
+        if (removed.status !== 200 && removed.status !== 404) {
+          console.error(`Cleanup could not delete test page ${id}: HTTP ${removed.status}`);
+        }
+      } catch (err) {
+        console.error(`Cleanup could not delete test page ${id}: ${(err as Error).message}`);
+      }
+    }
+
+    for (const publicId of uploadedPublicIds) {
+      try {
+        await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
+      } catch (err) {
+        console.error(
+          `Cleanup could not remove test upload ${publicId}: ${(err as Error).message}`,
+        );
+      }
+    }
+
+    if (temporaryEmails.size) {
+      try {
+        await connectDB();
+        await User.deleteMany({ email: { $in: [...temporaryEmails] } });
+      } catch (err) {
+        console.error(`Cleanup could not remove temporary users: ${(err as Error).message}`);
+      }
+    }
+  } finally {
+    await mongoose.disconnect().catch((err) => {
+      console.error(`Cleanup could not close the MongoDB connection: ${(err as Error).message}`);
+    });
+  }
+}
 
 // Uploads a demo image into the per-user Cloudinary folder. The Cloudinary typings want an
 // ImageFormat[] but the signed request carries a comma separated string, which is what the
@@ -133,6 +192,7 @@ async function main() {
   // --- EP-02..EP-05 auth --------------------------------------------------------------
   section("EP-02..EP-05 auth");
   const creator = session("creator");
+  cleanupCreator = creator;
   const login = await call("/api/v1/auth/login", {
     method: "POST",
     body: CREATOR,
@@ -191,6 +251,7 @@ async function main() {
     session: creator,
   });
   const pageId = created.data?.id;
+  if (pageId) createdPageIds.add(pageId);
   check(
     "draft created with status DRAFT",
     created.status === 201 && created.data.status === "DRAFT" && !!pageId,
@@ -211,6 +272,7 @@ async function main() {
       messages: ["Hello <b>Riya</b>", "Second <script>alert(1)</script>line"],
       from: "Verifier",
       language: "HINGLISH",
+      theme: { templateId: "neon-night" },
       occasionDate: new Date().toISOString(),
       draftStep: 3,
       status: "PUBLISHED",
@@ -247,11 +309,13 @@ async function main() {
   );
 
   const otherCreator = session("other");
+  const otherEmail = `verify-${Date.now()}@example.com`;
   await call("/api/v1/auth/register", {
     method: "POST",
     session: otherCreator,
-    body: { name: "Other User", email: `verify-${Date.now()}@example.com`, password: "Verify1234" },
+    body: { name: "Other User", email: otherEmail, password: "Verify1234" },
   });
+  temporaryEmails.add(otherEmail);
   const foreignRead = await call(`/api/v1/pages/${pageId}`, { session: otherCreator });
   check("another creator cannot read the page (403)", foreignRead.status === 403, foreignRead.raw);
   check(
@@ -286,6 +350,7 @@ async function main() {
     `wishly/${owner}`,
     sign.data.allowedFormats,
   );
+  uploadedPublicIds.add(uploaded.public_id);
   const registered = await call<{ media: { id: string; w: number; h: number }; rev: number }>(
     "/api/v1/media",
     {
@@ -319,6 +384,7 @@ async function main() {
     session: creator,
     body: { occasion: "BIRTHDAY", recipient: { name: "No Photo" }, messages: ["hi"] },
   });
+  if (noPhotoDraft.data?.id) createdPageIds.add(noPhotoDraft.data.id);
   const noPhotoPublish = await call(`/api/v1/pages/${noPhotoDraft.data.id}/publish`, {
     method: "POST",
     session: creator,
@@ -483,11 +549,13 @@ async function main() {
     },
   });
   const pwdPageId = pwdDraft.data.id;
+  if (pwdPageId) createdPageIds.add(pwdPageId);
   const pwdUpload = await uploadDemoImage(
     "https://res.cloudinary.com/demo/image/upload/cld-sample.jpg",
     `wishly/${owner}`,
     sign.data.allowedFormats,
   );
+  uploadedPublicIds.add(pwdUpload.public_id);
   await call("/api/v1/media", {
     method: "POST",
     session: creator,
@@ -566,11 +634,13 @@ async function main() {
       revealAt: new Date(Date.now() + 3 * 24 * 3600 * 1000).toISOString(),
     },
   });
+  if (schedDraft.data?.id) createdPageIds.add(schedDraft.data.id);
   const schedUpload = await uploadDemoImage(
     "https://res.cloudinary.com/demo/image/upload/cld-sample-2.jpg",
     `wishly/${owner}`,
     sign.data.allowedFormats,
   );
+  uploadedPublicIds.add(schedUpload.public_id);
   await call("/api/v1/media", {
     method: "POST",
     session: creator,
@@ -695,6 +765,7 @@ async function main() {
       session: creator,
     },
   );
+  if (duplicated.data?.id) createdPageIds.add(duplicated.data.id);
   check(
     "duplicate creates a slug-less draft with zero stats",
     duplicated.status === 201 && duplicated.data.slug === null && duplicated.data.stats.views === 0,
@@ -720,15 +791,10 @@ async function main() {
 
   // --- Cleanup ------------------------------------------------------------------------
   section("cleanup");
-  for (const id of [
-    pageId,
-    noPhotoDraft.data.id,
-    pwdPageId,
-    schedDraft.data.id,
-    duplicated.data.id,
-  ]) {
+  for (const id of createdPageIds) {
     const removed = await call(`/api/v1/pages/${id}`, { method: "DELETE", session: creator });
     check(`deleted page ${id}`, removed.status === 200, removed.raw);
+    if (removed.status === 200) createdPageIds.delete(id);
   }
   console.log("\nCloudinary assets were removed by the delete route (destroyAssets).");
 
@@ -736,7 +802,17 @@ async function main() {
   if (failed > 0) process.exit(1);
 }
 
-main().catch((err) => {
-  console.error("\nVerification crashed:", err?.name, "-", err?.message);
-  process.exit(1);
-});
+main()
+  .catch((err) => {
+    console.error("\nVerification crashed:", err?.name, "-", err?.message);
+    let cause = err?.cause;
+    while (cause) {
+      console.error("  caused by:", cause?.code ?? cause?.name, "-", cause?.message);
+      cause = cause?.cause;
+    }
+    failed += 1;
+  })
+  .finally(async () => {
+    await cleanup();
+    if (failed > 0) process.exitCode = 1;
+  });

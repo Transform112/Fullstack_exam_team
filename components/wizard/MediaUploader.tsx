@@ -200,7 +200,7 @@ export function MediaUploader({ pageId, onUploaded, disabled }: MediaUploaderPro
       />
 
       {rejections.length > 0 && (
-        <ul className="flex flex-col gap-1 rounded-card border border-red-200 bg-red-50 p-3">
+        <ul role="alert" className="flex flex-col gap-1 rounded-card border border-red-200 bg-red-50 p-3 [overflow-wrap:anywhere]">
           {rejections.map((message) => (
             <li key={message} className="text-xs font-medium text-red-700">
               {message}

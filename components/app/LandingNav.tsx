@@ -168,6 +168,21 @@ export function LandingNav({ loggedIn = false }: { loggedIn?: boolean }) {
         aria-labelledby="mobile-navigation-title"
         onCancel={() => setMobileOpen(false)}
         onClose={() => setMobileOpen(false)}
+        onKeyDown={(event) => {
+          if (event.key !== "Tab") return;
+          const controls = Array.from(
+            event.currentTarget.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"),
+          ).filter((element) => element.getClientRects().length > 0);
+          const firstControl = controls[0];
+          const lastControl = controls[controls.length - 1];
+          if (event.shiftKey && document.activeElement === firstControl) {
+            event.preventDefault();
+            lastControl?.focus();
+          } else if (!event.shiftKey && document.activeElement === lastControl) {
+            event.preventDefault();
+            firstControl?.focus();
+          }
+        }}
       >
         <div className="studio-mobile-dialog-header">
           <Brand onClick={closeNavigation} />

@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { SAMPLE_WISH } from "@/lib/sample-data";
@@ -26,17 +26,25 @@ export function MiniPreview({ templateId, className }: {
     <CelebrationCard variant={templateId} compact />
   </div>;
 }
-export function TemplatePreviewDialog({ template, open, onOpenChange }: {
+export function TemplatePreviewDialog({ template, open, onOpenChange, returnFocusRef }: {
   template: TemplateCardData;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  returnFocusRef?: RefObject<HTMLButtonElement | null>;
 }) {
   const sample = useMemo(() => {
     const data = SAMPLE_WISH(getTemplateId(template.id), "ENGLISH");
     return { ...data, media: [], theme: { ...data.theme, accent: template.accent } };
   }, [template.id, template.accent]);
   return <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="studio-preview-dialog max-w-3xl max-h-[92dvh] overflow-y-auto p-5 sm:p-8">
+    <DialogContent
+      className="studio-preview-dialog max-w-3xl max-h-[92dvh] overflow-y-auto p-5 sm:p-8"
+      onCloseAutoFocus={(event) => {
+        if (!returnFocusRef?.current) return;
+        event.preventDefault();
+        returnFocusRef.current.focus();
+      }}
+    >
       <div className="preview-dialog-grid">
         <div>
           <p className="eyebrow">DESIGN PREVIEW</p>
@@ -60,8 +68,12 @@ export function TemplateCard({ template, className }: {
   className?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const returnFocusRef = useRef<HTMLButtonElement>(null);
   return <article className={cn("studio-template", className)}>
-    <button className="template-preview-button" type="button" onClick={() => setOpen(true)} aria-label={`Preview the ${template.name} template`}>
+    <button className="template-preview-button" type="button" onClick={(event) => {
+      returnFocusRef.current = event.currentTarget;
+      setOpen(true);
+    }} aria-label={`Preview the ${template.name} template`}>
       <MiniPreview templateId={template.id} accent={template.accent} />
       <span className="preview-label">Preview design <ArrowUpRight size={16} />
       </span>
@@ -73,11 +85,14 @@ export function TemplateCard({ template, className }: {
         <p>{template.id === "neon-night" ? "For the life of the party" : template.id === "royal-gold" ? "For a truly golden moment" : "For your favourite soft spot"}
         </p>
       </div>
-      <button aria-label={`Open ${template.name} preview`} className="template-arrow" onClick={() => setOpen(true)}>
+      <button aria-label={`Open ${template.name} preview`} className="template-arrow" onClick={(event) => {
+        returnFocusRef.current = event.currentTarget;
+        setOpen(true);
+      }}>
         <ArrowUpRight size={20} />
       </button>
     </div>
-    <TemplatePreviewDialog template={template} open={open} onOpenChange={setOpen} />
+    <TemplatePreviewDialog template={template} open={open} onOpenChange={setOpen} returnFocusRef={returnFocusRef} />
   </article>;
 }
 export default TemplatePreviewDialog;

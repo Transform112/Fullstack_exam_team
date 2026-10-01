@@ -1,0 +1,7 @@
+node_modules
+.next
+package-lock.json
+public/music
+docs
+# Source blueprint kept byte-for-byte as provided
+workflow.md

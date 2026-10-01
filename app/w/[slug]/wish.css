@@ -1,0 +1,183 @@
+/* Wish-page stylesheet. Ambient loops are CSS keyframes (never Framer Motion), and
+   only transform/opacity are animated. Imported once by WishRenderer. */
+.wish-root {
+  overflow-x: clip;
+  min-height: var(--wish-vh, 100svh);
+  font-family: var(--f-body);
+  overflow-wrap: anywhere;
+}
+.wish-root[lang="hi"] * {
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+.wish-layer {
+  will-change: transform;
+}
+.wish-section {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes wish-rise {
+  from {
+    transform: translate3d(0, 110vh, 0);
+  }
+  to {
+    transform: translate3d(0, -30vh, 0);
+  }
+}
+@keyframes wish-fall {
+  from {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(0, 110vh, 0) rotate(360deg);
+  }
+}
+@keyframes wish-sway {
+  0%,
+  100% {
+    transform: translate3d(-12px, 0, 0);
+  }
+  50% {
+    transform: translate3d(12px, 0, 0);
+  }
+}
+@keyframes wish-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+@keyframes wish-bob {
+  0%,
+  100% {
+    transform: translate3d(0, -6px, 0);
+  }
+  50% {
+    transform: translate3d(0, 6px, 0);
+  }
+}
+@keyframes wish-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(30px, -20px, 0);
+  }
+}
+@keyframes wish-flicker {
+  0%,
+  100% {
+    transform: scaleY(1) scaleX(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleY(1.15) scaleX(0.92);
+    opacity: 0.85;
+  }
+}
+@keyframes wish-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+@keyframes wish-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+@keyframes wish-shimmer {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(120%);
+  }
+}
+
+.wish-caret {
+  animation: wish-twinkle 1s step-end infinite;
+}
+.wish-shake {
+  animation: wish-shake 0.4s ease-in-out;
+}
+
+/* Ambient loop utility classes. Components may set the shorthand inline (seeded
+   duration and delay); these defaults keep the documented class names working and are
+   tunable per element with --wish-dur / --wish-delay. */
+.wish-rise {
+  animation: wish-rise var(--wish-dur, 16s) linear infinite;
+  animation-delay: var(--wish-delay, 0s);
+}
+.wish-fall {
+  animation: wish-fall var(--wish-dur, 12s) linear infinite;
+  animation-delay: var(--wish-delay, 0s);
+}
+.wish-sway {
+  animation: wish-sway var(--wish-dur, 4s) ease-in-out infinite;
+  animation-delay: var(--wish-delay, 0s);
+}
+.wish-twinkle {
+  animation: wish-twinkle var(--wish-dur, 4s) ease-in-out infinite;
+  animation-delay: var(--wish-delay, 0s);
+}
+.wish-bob {
+  animation: wish-bob var(--wish-dur, 7s) ease-in-out infinite;
+  animation-delay: var(--wish-delay, 0s);
+}
+.wish-drift {
+  animation: wish-drift var(--wish-dur, 20s) ease-in-out infinite;
+  animation-delay: var(--wish-delay, 0s);
+}
+.wish-flicker {
+  animation: wish-flicker var(--wish-dur, 0.9s) ease-in-out infinite;
+  animation-delay: var(--wish-delay, 0s);
+  transform-origin: bottom center;
+}
+.wish-pulse {
+  animation: wish-pulse var(--wish-dur, 2.4s) ease-in-out infinite;
+  animation-delay: var(--wish-delay, 0s);
+}
+.wish-shimmer {
+  animation: wish-shimmer var(--wish-dur, 6s) linear infinite;
+  animation-delay: var(--wish-delay, 0s);
+}
+
+/* Only hover-capable pointers get hover effects (docs/04 SECTION 9.7). */
+@media (hover: hover) and (pointer: fine) {
+  .wish-hover-lift {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .wish-hover-lift:hover {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wish-root *,
+  .wish-root *::before,
+  .wish-root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

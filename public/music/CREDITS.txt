@@ -1,0 +1,26 @@
+Music files for the generated pages (docs/04 SECTION 11).
+
+Required files, all royalty-free and 2 MB or smaller:
+  public/music/soft-piano.mp3
+  public/music/happy-pop.mp3
+  public/music/party-beat.mp3
+  public/music/romantic-strings.mp3
+
+STATUS: NOT ADDED YET.
+This environment could not download audio files, so no placeholder file was created.
+The page degrades safely while they are missing: useMusic hides the music toggle, and
+the wizard's music preview buttons stay disabled. Everything else works.
+
+How to add them (a human must do this before the demo):
+1. Download one royalty-free track per name from https://pixabay.com/music/ or the
+   YouTube Audio Library: soft-piano (gentle solo piano), happy-pop (upbeat light pop),
+   party-beat (energetic dance), romantic-strings (slow strings).
+2. Trim and compress each to at most 90 seconds:
+   ffmpeg -i input.mp3 -t 90 -b:a 96k -ac 2 -af "afade=t=out:st=86:d=4" public/music/<name>.mp3
+3. Record the source URL and license for each file below.
+
+Credits:
+  soft-piano.mp3        - source: <add> - license: <add>
+  happy-pop.mp3         - source: <add> - license: <add>
+  party-beat.mp3        - source: <add> - license: <add>
+  romantic-strings.mp3  - source: <add> - license: <add>

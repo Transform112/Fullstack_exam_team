@@ -79,7 +79,7 @@ export function LockScreen({
   return (
     <div
       className="wish-root"
-      style={{ position: "relative", minHeight: "100svh", background: "#0F0A1E" }}
+      style={{ position: "relative", minHeight: "100svh", background: "#352c32" }}
     >
       <LockBackground firstName={firstName} />
       <div
@@ -103,7 +103,7 @@ export function LockScreen({
             borderRadius: "50%",
             display: "grid",
             placeItems: "center",
-            background: "linear-gradient(135deg, #7C3AED, #EC4899)",
+            background: "#70566f",
             animation: "wish-pulse 2.4s ease-in-out infinite",
           }}
         >

@@ -1,15 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
+import "./studio-shell.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Wishly - Custom Occasion Page Generator",
@@ -21,12 +14,12 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#7C3AED",
+  themeColor: "#FAF7F0",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="en">
       <body>
         {children}
         <Toaster position="top-center" richColors closeButton />

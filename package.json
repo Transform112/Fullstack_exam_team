@@ -10,9 +10,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "preview:ui": "node scripts/start-preview.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:watch": "vitest",
     "test:e2e": "playwright test",
     "format": "prettier --write .",
     "seed": "tsx --env-file=.env scripts/seed.ts"

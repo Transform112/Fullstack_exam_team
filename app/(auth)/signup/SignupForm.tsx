@@ -1,13 +1,12 @@
 "use client";
 
 // Signup form (docs/03 P1-02): react-hook-form with zodResolver using registerSchema,
-// inline field errors, a loading submit button and a sonner toast on API failure.
+// inline field errors, a loading submit button and persistent feedback on API failure.
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
-import { toast } from "sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { ApiError, api } from "@/lib/client-api";
 import { registerSchema } from "@/lib/validators";
@@ -20,6 +19,7 @@ type SignupValues = z.infer<typeof registerSchema>;
 export function SignupForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -31,19 +31,21 @@ export function SignupForm() {
 
   // Creates the account, then moves the visitor to their dashboard.
   const onSubmit = async (values: SignupValues) => {
+    setServerError(null);
     try {
       await api("/auth/register", { method: "POST", body: values });
       router.push("/dashboard");
       router.refresh();
     } catch (err) {
-      toast.error(
+      setServerError(
         err instanceof ApiError ? err.message : "Could not create your account. Please try again.",
       );
     }
   };
 
   return (
-    <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+    <form noValidate aria-busy={isSubmitting} onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+      {serverError && <p role="alert" className="auth-error-notice">{serverError}</p>}
       <div className="flex flex-col gap-2">
         <Label htmlFor="signup-name">Your name</Label>
         <Input
@@ -97,6 +99,7 @@ export function SignupForm() {
             type="button"
             onClick={() => setShowPassword((v) => !v)}
             aria-label={showPassword ? "Hide password" : "Show password"}
+            aria-pressed={showPassword}
             className="absolute right-0 top-0 flex h-11 w-11 items-center justify-center rounded-full text-muted hover:text-ink"
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}

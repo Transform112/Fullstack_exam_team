@@ -114,8 +114,8 @@ export default function GenerateReviewPage() {
   const alreadyPublished = owner?.status === "PUBLISHED" || owner?.status === "SCHEDULED";
 
   return (
-    <main className="min-h-screen bg-canvas">
-      <div className="container-page py-6">
+    <div className="min-h-screen bg-canvas">
+      <div className="py-2">
         <Link
           href={`/pages/${id}/edit`}
           className="mb-4 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-primary hover:underline"
@@ -124,9 +124,9 @@ export default function GenerateReviewPage() {
           Back to editing
         </Link>
 
-        <h1 className="font-heading text-2xl font-semibold text-ink">Generate your surprise</h1>
+        <h1 className="font-heading text-4xl font-normal tracking-tight text-ink sm:text-5xl">Ready for their big moment?</h1>
         <p className="mt-1 text-sm text-muted">
-          Check the preview, then generate the link you can share.
+          Take one last look at your surprise. When it feels right, publish it and share your personal link.
         </p>
 
         {loading && (
@@ -230,6 +230,6 @@ export default function GenerateReviewPage() {
           qrCode={result.qrCode}
         />
       )}
-    </main>
+    </div>
   );
 }

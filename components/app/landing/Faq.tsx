@@ -35,7 +35,7 @@ export function Faq() {
     <section id="faq" className="scroll-mt-20 py-16 sm:py-24">
       <div className="container-page">
         <motion.div {...rise(reduced)} className="mx-auto max-w-2xl text-center">
-          <h2 className="font-heading text-3xl font-bold text-ink sm:text-4xl">
+          <h2 className="font-heading text-3xl font-normal text-ink sm:text-4xl">
             Questions, answered
           </h2>
           <p className="mt-3 text-base text-muted">Everything you might ask before you start.</p>
@@ -45,7 +45,7 @@ export function Faq() {
           <Accordion
             type="single"
             collapsible
-            className="rounded-card border border-border bg-white px-5 shadow-card"
+            className="border-y border-border bg-transparent px-1"
           >
             {FAQS.map((item, index) => (
               <AccordionItem key={item.q} value={`faq-${index}`} className="last:border-b-0">

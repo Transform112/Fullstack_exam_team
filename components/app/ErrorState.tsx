@@ -21,15 +21,15 @@ export function ErrorState({
     <div
       role="alert"
       className={cn(
-        "flex flex-col items-center gap-3 rounded-card border border-border bg-white px-6 py-10 text-center",
+        "flex flex-col items-center gap-4 rounded-card border border-border bg-white px-6 py-14 text-center",
         className,
       )}
     >
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-600">
         <AlertTriangle className="h-6 w-6" aria-hidden />
       </span>
-      <h2 className="font-heading text-lg font-semibold text-ink">{title}</h2>
-      <p className="max-w-sm text-sm text-muted">{message}</p>
+      <h2 className="font-heading text-2xl font-normal text-ink">{title}</h2>
+      <p className="max-w-md text-sm leading-relaxed text-muted">{message}</p>
       {onRetry ? (
         <Button type="button" variant="outline" onClick={onRetry}>
           <RotateCw className="h-4 w-4" aria-hidden />

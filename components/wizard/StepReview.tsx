@@ -177,7 +177,7 @@ export function StepReview() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-heading text-xl font-semibold text-ink">Everything look right?</h2>
+        <h2 className="font-heading text-2xl font-normal tracking-tight text-ink sm:text-3xl">Everything look right?</h2>
         <p className="mt-1 text-sm text-muted">
           This is exactly what your page will show. Jump back to any step to change it.
         </p>

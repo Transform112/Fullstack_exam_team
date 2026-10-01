@@ -120,7 +120,7 @@ export function UsersTable() {
           <div className="min-w-0 overflow-x-auto">
             <table className="w-full min-w-[720px] border-collapse text-left text-sm">
               <thead>
-                <tr className="text-xs uppercase tracking-wide text-muted">
+                <tr className="bg-canvas text-xs uppercase tracking-wide text-muted">
                   <th className="px-3 py-2 font-medium">Name</th>
                   <th className="px-3 py-2 font-medium">Role</th>
                   <th className="px-3 py-2 font-medium">Account</th>
@@ -141,7 +141,7 @@ export function UsersTable() {
                       </tr>
                     ))
                   : rows.map((row) => (
-                      <tr key={row.id} className="border-t border-border align-middle">
+                      <tr key={row.id} className="border-t border-border align-middle transition-colors hover:bg-canvas/60">
                         <td className="px-3 py-3">
                           <span className="block font-medium text-ink">{row.name}</span>
                           <span className="block text-xs text-muted">{row.email}</span>

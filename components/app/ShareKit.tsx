@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { Copy, Download, Instagram, MessageCircle } from "lucide-react";
+import { Camera, Copy, Download, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -137,7 +137,7 @@ export function ShareKit({ url, recipientName, slug, qrCode }: ShareKitProps) {
           </a>
         </Button>
         <Button type="button" variant="outline" onClick={shareToInstagram}>
-          <Instagram className="h-4 w-4" aria-hidden />
+          <Camera className="h-4 w-4" aria-hidden />
           Instagram
         </Button>
       </div>

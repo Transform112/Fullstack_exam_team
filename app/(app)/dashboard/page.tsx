@@ -58,14 +58,18 @@ export default function DashboardPage() {
   }, [load, page]);
 
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className="flex flex-col gap-8">
+      <header className="flex flex-col gap-5 border-b border-border pb-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-heading text-2xl font-semibold text-ink sm:text-3xl">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Your celebration studio</p>
+          <h1 className="font-heading text-4xl font-normal tracking-tight text-ink sm:text-5xl">
             Your surprises
           </h1>
-          <p className="text-sm text-muted">
-            {total} {total === 1 ? "page" : "pages"} · up to 50 per account
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted">
+            A little collection of big feelings. Create, finish and share something personal.
+          </p>
+          <p className="mt-3 text-xs text-muted">
+            {loading ? "Loading your collection…" : `${total} ${total === 1 ? "page" : "pages"}`} · up to 50 per account
           </p>
         </div>
         <Button asChild className="w-full sm:w-auto">

@@ -84,7 +84,7 @@ export function StepWords() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-heading text-xl font-semibold text-ink">The words</h2>
+        <h2 className="font-heading text-2xl font-normal tracking-tight text-ink sm:text-3xl">The words</h2>
         <p className="mt-1 text-sm text-muted">
           Choose the language of the page, then write what you want to say.
         </p>

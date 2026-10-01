@@ -18,12 +18,12 @@ export default async function EditPage({ params }: { params: Params }) {
   }
 
   return (
-    <main className="min-h-screen bg-canvas">
+    <div className="min-h-screen bg-canvas">
       <Wizard
         mode="edit"
         initialPage={serializeOwnerPage(page.toObject())}
         userId={String(user._id)}
       />
-    </main>
+    </div>
   );
 }

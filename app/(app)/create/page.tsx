@@ -22,8 +22,8 @@ export default async function CreatePage({ searchParams }: { searchParams: Searc
   }
 
   return (
-    <main className="min-h-screen bg-canvas">
+    <div className="min-h-screen bg-canvas">
       <Wizard mode="create" initialPage={initialPage} userId={String(user._id)} />
-    </main>
+    </div>
   );
 }

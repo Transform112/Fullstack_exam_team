@@ -12,6 +12,8 @@ beforeEach(() => {
   process.env.JWT_SECRET = AUTH_SECRET;
   process.env.NEXT_PUBLIC_APP_URL = "http://localhost:3000";
   delete process.env.ALLOWED_ORIGINS;
+  delete process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  delete process.env.VERCEL_URL;
 });
 
 const PAGE_ID = "64b7f0c2f1a2b3c4d5e6f7a8";
@@ -147,5 +149,18 @@ describe("route() origin guard", () => {
     expect((await run(post("http://192.168.1.20:3000"))).status).toBe(200);
     expect((await run(post("http://localhost:4000"))).status).toBe(200);
     expect((await run(post("http://192.168.1.21:3000"))).status).toBe(403);
+  });
+
+  it("allows the exact Vercel production hostname", async () => {
+    process.env.VERCEL_PROJECT_PRODUCTION_URL = "fullstack-exam-team.vercel.app";
+    expect((await run(post("https://fullstack-exam-team.vercel.app"))).status).toBe(200);
+  });
+
+  it("allows this Vercel deployment hostname without accepting suffix lookalikes", async () => {
+    process.env.VERCEL_URL = "fullstack-exam-team-abc123.vercel.app";
+    expect((await run(post("https://fullstack-exam-team-abc123.vercel.app"))).status).toBe(200);
+    expect(
+      (await run(post("https://fullstack-exam-team-abc123.vercel.app.attacker.test"))).status,
+    ).toBe(403);
   });
 });

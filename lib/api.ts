@@ -75,20 +75,38 @@ export function errorResponse(err: unknown, requestId = newRequestId()) {
 
 const MUTATING = new Set(["POST", "PATCH", "PUT", "DELETE"]);
 
-// Every origin allowed to call a mutating endpoint: the app URL plus any extra origins
-// listed in ALLOWED_ORIGINS (comma separated), for example a LAN or preview URL.
+function normalizedOrigin(value: string | undefined, assumeHttps = false): string | undefined {
+  if (!value?.trim()) return undefined;
+  try {
+    const input = value.trim();
+    const url = new URL(assumeHttps && !input.includes("://") ? `https://${input}` : input);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return undefined;
+    return url.origin;
+  } catch {
+    return undefined;
+  }
+}
+
+// Allow the configured app, explicit additional origins and Vercel's trusted
+// production/deployment hostnames. Never derive an allowed origin from the request.
 function allowedOrigins() {
-  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").replace(/\/$/, "");
+  const appOrigin = normalizedOrigin(process.env.NEXT_PUBLIC_APP_URL) ?? "http://localhost:3000";
   const extra = (process.env.ALLOWED_ORIGINS ?? "")
     .split(",")
-    .map((value) => value.trim().replace(/\/$/, ""))
-    .filter(Boolean);
-  return new Set([
-    appUrl,
-    appUrl.replace("localhost", "127.0.0.1"),
-    appUrl.replace("127.0.0.1", "localhost"),
-    ...extra,
-  ]);
+    .map((value) => normalizedOrigin(value))
+    .filter((value): value is string => !!value);
+  const vercelOrigins = [
+    normalizedOrigin(process.env.VERCEL_PROJECT_PRODUCTION_URL, true),
+    normalizedOrigin(process.env.VERCEL_URL, true),
+  ].filter((value): value is string => !!value);
+  const origins = new Set([appOrigin, ...extra, ...vercelOrigins]);
+  const appUrl = new URL(appOrigin);
+  if (appUrl.hostname === "localhost") {
+    origins.add(`http://127.0.0.1${appUrl.port ? `:${appUrl.port}` : ""}`);
+  } else if (appUrl.hostname === "127.0.0.1") {
+    origins.add(`http://localhost${appUrl.port ? `:${appUrl.port}` : ""}`);
+  }
+  return origins;
 }
 
 // Same-origin check for state-changing requests. CORS alone is not CSRF protection,

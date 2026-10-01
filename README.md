@@ -2,6 +2,23 @@
 
 Create personalized occasion pages with messages, photos, video and three animated templates. One Next.js app serves the website and API under `/api/v1`.
 
+## Live Website
+
+- **Wishly:** [https://fullstack-exam-team.vercel.app/](https://fullstack-exam-team.vercel.app/)
+- **Health check:** [https://fullstack-exam-team.vercel.app/api/v1/health](https://fullstack-exam-team.vercel.app/api/v1/health)
+
+The deployment was checked on 2026-10-01. Its health endpoint responds successfully. The production database does not currently contain the built-in sample pages, so sample slugs shown elsewhere in this README may return “page not found.” You can still create and publish your own page after signing up.
+
+## Try The Website
+
+1. Open the [Wishly home page](https://fullstack-exam-team.vercel.app/). Browse [Templates](https://fullstack-exam-team.vercel.app/templates), [Occasion guides](https://fullstack-exam-team.vercel.app/occasions), or [Help](https://fullstack-exam-team.vercel.app/help) without an account.
+2. Create an account at [Sign up](https://fullstack-exam-team.vercel.app/signup), then sign in. A new account has the Creator role.
+3. From your dashboard, select **Create a surprise**. Complete Occasion, Recipient, Words, Media, Style, and Review. The preview updates while you work; drafts save as you continue.
+4. Add at least one photo and select a template before generating. Uploads need the deployment’s Cloudinary configuration. If the upload step reports a service error, contact the site administrator rather than entering Cloudinary credentials into the browser.
+5. On success, use the share dialog to copy the page link, download its QR code, or share it. Open the link in another browser or a private window to experience the page as a visitor.
+6. To try a locked page, create another page and set a future reveal time or password in **Style** before publishing. The server enforces both locks.
+7. Return to **Dashboard** to edit, duplicate, unpublish, or delete your pages. **Insights** shows views and wishes. `/admin` is for an administrator account provisioned by the site owner; signing up does not grant admin access.
+
 ## Local Setup
 
 Requirements: Node.js 24 LTS recommended, npm, MongoDB (Atlas recommended) and a Cloudinary account.
@@ -9,8 +26,6 @@ Requirements: Node.js 24 LTS recommended, npm, MongoDB (Atlas recommended) and a
 ```powershell
 git clone https://github.com/gopalagrawal-192/Fullstack_exam_team.git
 Set-Location Fullstack_exam_team
-# Use the branch containing this application until its pull request is merged.
-git switch harshit
 npm ci
 Copy-Item .env.example .env
 ```
@@ -37,17 +52,9 @@ npm run dev
 
 Open http://localhost:3000. If using another port, update `NEXT_PUBLIC_APP_URL` to match. Seed only the intended database; do not run destructive verification against production.
 
-## Using The Website
+## Local Seed Fixtures
 
-1. Sign up at `/signup` or log in at `/login`.
-2. Select **Create a surprise** and complete Occasion, Recipient, Words, Media, Style and Review.
-3. Add a recipient name, at least one message, at least one image and a template. Choose English, Hinglish or Hindi. Images are limited to 15 files of 8 MB each; videos to 2 files of 50 MB and 60 seconds each.
-4. Optionally set a future reveal time or a page password. Generate the page, then copy its link, download its QR PNG or share through WhatsApp.
-5. Visitors open `/w/<slug>`. Scheduled/password-protected pages unlock through server checks. After opening, **Tap to begin** starts the experience and available background audio.
-6. Use `/dashboard` to edit, duplicate, share, unpublish or delete pages. Insights shows views and wishes; page owners can moderate wishes.
-7. Administrators use `/admin` to manage users, pages, wishes and templates.
-
-Seeded sample links:
+Run `npm run seed` against a local or isolated test database to create the following sample pages. Do not seed production unless the site owner explicitly intends to publish these fixtures.
 
 - `/w/riya-birthday-7f3a`: Birthday, Hinglish, Neon Night.
 - `/w/kavya-anniversary-2k4m`: Anniversary, English, Royal Gold.
@@ -55,14 +62,14 @@ Seeded sample links:
 - `/w/dev-farewell-3c8z`: scheduled example, relative to seed time.
 - `/w/sana-friendship-5h2q`: password example, password `friends123`.
 
-## Demo Accounts
+## Local/Test Accounts
 
 | Role | Email | Password |
 | --- | --- | --- |
 | Admin | `admin@demo.com` | `Admin@123` |
 | Creator | `creator@demo.com` | `Creator@123` |
 
-These are intentionally public demo fixtures, not real cloud-service credentials. Restrict or replace demo accounts before hosting private data. Never reuse these passwords for real accounts, MongoDB, Cloudinary or hosting services. Optional `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` create an additional operator account; keep those values private.
+These accounts are created only when the database is seeded. They are for local/test use and are not a promised login for the public Vercel deployment. Never use these passwords for MongoDB, Cloudinary, Vercel, or real personal accounts. The site owner must provision and protect any live administrator account. Optional `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` create an additional operator account; keep those values private.
 
 ## Checks And Production
 

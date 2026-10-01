@@ -40,8 +40,8 @@ export async function unlockPage(slug: string, password: string) {
   };
 }
 
-// EP-20. Claims a 30 minute lease for this visitor, then updates the counters. A lease
-// that is still active makes the duplicate-key error mean "already counted".
+// EP-20. Claims a 30 minute lease for this visitor, then updates the counters. Duplicate
+// insert races escape the transaction because Mongo aborts a transaction on duplicate key.
 export async function recordView(
   page: PageLean,
   user: UserLean | null,
@@ -62,19 +62,14 @@ export async function recordView(
         const cutoff = new Date(now.getTime() - VIEW_WINDOW_MS);
         const expiresAt = new Date(now.getTime() + VIEW_WINDOW_MS);
 
-        let claimed = false;
-        try {
-          await PageView.findOneAndUpdate(
-            { pageId, visitorId, lastCountedAt: { $lte: cutoff } },
-            { $set: { lastCountedAt: now, expiresAt } },
-            { upsert: true, new: true, ...opts },
-          );
-          claimed = true;
-        } catch (err) {
-          // Unique (pageId, visitorId) index: an active lease already exists.
-          if ((err as { code?: number }).code !== 11000) throw err;
+        const refreshed = await PageView.findOneAndUpdate(
+          { pageId, visitorId, lastCountedAt: { $lte: cutoff } },
+          { $set: { lastCountedAt: now, expiresAt } },
+          { new: true, ...opts },
+        );
+        if (!refreshed) {
+          await PageView.create([{ pageId, visitorId, lastCountedAt: now, expiresAt }], opts);
         }
-        if (!claimed) return { counted: false };
 
         const seen = await PageVisitor.updateOne(
           { pageId, visitorId },
@@ -94,6 +89,9 @@ export async function recordView(
         return { counted: true };
       });
     } catch (err) {
+      // An active lease or concurrent first insert violates the unique key. Handle it
+      // only after the aborted transaction has unwound.
+      if ((err as { code?: number }).code === 11000) return { counted: false };
       // Bounded retry for a transient transaction conflict; the lease is re-evaluated.
       const label = (err as { codeName?: string; hasErrorLabel?: (l: string) => boolean }).codeName;
       const transient =

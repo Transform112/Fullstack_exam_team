@@ -1,0 +1,21 @@
+{
+  "name": "fullstack_exam_team",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gopalagrawal-192/Fullstack_exam_team.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gopalagrawal-192/Fullstack_exam_team/issues"
+  },
+  "homepage": "https://github.com/gopalagrawal-192/Fullstack_exam_team#readme"
+}

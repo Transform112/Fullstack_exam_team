@@ -53,7 +53,7 @@ export function ConfirmDialog({
         onOpenChange(next);
       }}
     >
-      <DialogContent className="max-w-sm">
+      <DialogContent className="max-w-sm" aria-busy={busy}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description ? <DialogDescription>{description}</DialogDescription> : null}
@@ -73,7 +73,7 @@ export function ConfirmDialog({
             onClick={confirm}
             disabled={busy}
           >
-            {busy ? "Working..." : confirmLabel}
+            <span role="status" aria-live="polite">{busy ? "Working..." : confirmLabel}</span>
           </Button>
         </div>
       </DialogContent>

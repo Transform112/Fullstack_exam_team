@@ -1,35 +1,35 @@
 import type { ThemeTokens } from "@/lib/wish-theme";
 
-// Royal Gold: elegant, anniversary and wedding. Gold stays fixed as the identity
-// colour; the creator accent replaces the highlight colour.
+// Neon Night: party, Gen-Z, nightlife. Space Grotesk stands in for Clash Display, which
+// is not on Google Fonts (docs/DECISIONS.md).
 export const theme: ThemeTokens = {
-  id: "royal-gold",
-  accentMode: "highlight",
+  id: "neon-night",
+  accentMode: "primary",
   colors: {
-    bg: "#0E0E10",
-    bgAlt: "#16130F",
-    surface: "#1C1813",
-    text: "#F5E6C8",
-    muted: "#B8A57C",
-    primary: "#D4AF37",
-    secondary: "#F5E6C8",
-    tertiary: "#7F1D1D",
-    highlight: "#7F1D1D",
+    bg: "#0B0420",
+    bgAlt: "#120833",
+    surface: "#1A0B3A",
+    text: "#F8F5FF",
+    muted: "#B9A9E6",
+    primary: "#FF4FA3",
+    secondary: "#22D3EE",
+    tertiary: "#A78BFA",
+    highlight: "#FBBF24",
   },
   fonts: {
-    display: "var(--font-playfair), var(--font-devanagari), serif",
-    body: "var(--font-cormorant), var(--font-devanagari), serif",
+    display: "var(--font-space), var(--font-devanagari), sans-serif",
+    body: "var(--font-space), var(--font-devanagari), sans-serif",
     hand: "var(--font-caveat), var(--font-devanagari), cursive",
   },
-  decorColors: ["#7F1D1D", "#D4AF37", "#F5E6C8", "#A52A2A"],
+  decorColors: ["#FF4FA3", "#22D3EE", "#A78BFA", "#FBBF24"],
   variants: {
-    intro: "envelope",
-    hero: "gold-frame",
+    intro: "glitch",
+    hero: "starfield",
     message: "typewriter",
-    timeline: "gold-medallion",
-    gallery: "carousel3d",
-    wishes: "ivory",
-    finale: "gold",
+    timeline: "center-line",
+    gallery: "masonry",
+    wishes: "glass",
+    finale: "neon",
   },
 };
 

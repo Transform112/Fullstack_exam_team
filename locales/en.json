@@ -21,6 +21,7 @@
   "message.signature": "- {from}",
   "timeline.title": "Our memories",
   "gallery.title": "Moments",
+  "gallery.photo": "Photo {n}",
   "gallery.close": "Close",
   "gallery.prev": "Previous photo",
   "gallery.next": "Next photo",
@@ -40,6 +41,7 @@
   "wishes.limit": "You have reached the wish limit. Try again later.",
   "wishes.profanity": "Please keep wishes kind",
   "wishes.error": "Could not send your wish. Please try again.",
+  "wishes.retry": "Retry",
   "wishes.previewNote": "Wishes appear here",
   "finale.title": "One last surprise",
   "finale.tap": "Tap the candles to blow them out",
@@ -65,6 +67,5 @@
   "lock.password.input": "Password",
   "lock.password.button": "Unlock",
   "lock.password.wrong": "Wrong password, try again",
-  "lock.password.limit": "Too many tries. Please wait a few minutes.",
-  "wishes.retry": "Try again"
+  "lock.password.limit": "Too many tries. Please wait a few minutes."
 }

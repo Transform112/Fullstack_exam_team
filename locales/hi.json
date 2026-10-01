@@ -21,6 +21,7 @@
   "message.signature": "- {from}",
   "timeline.title": "हमारी यादें",
   "gallery.title": "यादगार पल",
+  "gallery.photo": "फ़ोटो {n}",
   "gallery.close": "बंद करें",
   "gallery.prev": "पिछली फ़ोटो",
   "gallery.next": "अगली फ़ोटो",
@@ -40,6 +41,7 @@
   "wishes.limit": "शुभकामना की सीमा पूरी हो गई। बाद में कोशिश करें।",
   "wishes.profanity": "कृपया प्यार से लिखें",
   "wishes.error": "शुभकामना नहीं भेज पाए। फिर से कोशिश करें।",
+  "wishes.retry": "फिर से कोशिश करें",
   "wishes.previewNote": "शुभकामनाएं यहां दिखेंगी",
   "finale.title": "एक आखिरी सरप्राइज़",
   "finale.tap": "मोमबत्तियां बुझाने के लिए टैप करें",
@@ -65,6 +67,5 @@
   "lock.password.input": "पासवर्ड",
   "lock.password.button": "खोलें",
   "lock.password.wrong": "गलत पासवर्ड, फिर से कोशिश करें",
-  "lock.password.limit": "बहुत ज़्यादा कोशिशें। कुछ मिनट रुकें।",
-  "wishes.retry": "फिर कोशिश करें"
+  "lock.password.limit": "बहुत ज़्यादा कोशिशें। कुछ मिनट रुकें।"
 }

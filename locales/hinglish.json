@@ -21,6 +21,7 @@
   "message.signature": "- {from}",
   "timeline.title": "Apni yaadein",
   "gallery.title": "Yaadgaar pal",
+  "gallery.photo": "Photo {n}",
   "gallery.close": "Band karo",
   "gallery.prev": "Pichli photo",
   "gallery.next": "Agli photo",
@@ -40,6 +41,7 @@
   "wishes.limit": "Wish ki limit khatam ho gayi. Baad mein try karo.",
   "wishes.profanity": "Please wishes pyaar se likho",
   "wishes.error": "Wish nahi bhej paye. Dobara try karo.",
+  "wishes.retry": "Dobara try karo",
   "wishes.previewNote": "Wishes yahan dikhengi",
   "finale.title": "Ek last surprise",
   "finale.tap": "Candles par tap karke bujha do",
@@ -65,6 +67,5 @@
   "lock.password.input": "Password",
   "lock.password.button": "Kholo",
   "lock.password.wrong": "Galat password, dobara try karo",
-  "lock.password.limit": "Bahut zyada koshishein. Kuch minute ruko.",
-  "wishes.retry": "Phir try karo"
+  "lock.password.limit": "Bahut zyada koshishein. Kuch minute ruko."
 }

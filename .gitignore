@@ -1,4 +1,13 @@
-/docs/*
+# local planning and submission artifacts
+/docs/
+/SPEC.md
+/spec.md
+/PROMPTS.md
+/workflow.md
+/dataset.md
+/researchers.md
+/lib/test.txt
+/models/test.txt
 
 # dependencies
 /node_modules
@@ -14,12 +23,12 @@ next-env.d.ts
 # production
 /build
 
-# local env files - never commit secrets
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# local credentials - only the blank template is publishable
+.env*
+!.env.example
+*.key
+*.p12
+*.pfx
 
 # testing
 /coverage
@@ -30,6 +39,9 @@ next-env.d.ts
 *.cookie-jar.txt
 
 # misc
+.remember/
+.idea/
+jar.txt
 .DS_Store
 *.pem
 npm-debug.log*

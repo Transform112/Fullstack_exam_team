@@ -53,6 +53,8 @@ export function LoginForm() {
           type="email"
           inputMode="email"
           autoComplete="email"
+          autoCapitalize="none"
+          spellCheck={false}
           placeholder="you@example.com"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "login-email-error" : undefined}

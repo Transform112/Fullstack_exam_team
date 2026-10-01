@@ -181,3 +181,12 @@
     transition-duration: 0.01ms !important;
   }
 }
+/* Offline-ready font variable classes used by the recipient template contracts. */
+.wish-font-space { --font-space: "Trebuchet MS", "Segoe UI"; }
+.wish-font-fredoka { --font-fredoka: Georgia, serif; }
+.wish-font-quicksand { --font-quicksand: "Segoe UI", sans-serif; }
+.wish-font-caveat { --font-caveat: "Segoe Print", "Comic Sans MS", cursive; }
+.wish-font-kalam { --font-kalam: "Nirmala UI", Mangal, sans-serif; }
+.wish-font-playfair { --font-playfair: Georgia, "Times New Roman", serif; }
+.wish-font-cormorant { --font-cormorant: "Palatino Linotype", Georgia, serif; }
+.wish-font-devanagari { --font-devanagari: "Nirmala UI", Mangal, sans-serif; }

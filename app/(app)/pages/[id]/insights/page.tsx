@@ -36,8 +36,8 @@ function StatCard({ label, value, hint }: { label: string; value: number; hint: 
         <CardTitle className="text-sm font-medium text-muted">{label}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="font-heading text-3xl font-semibold text-ink">{value.toLocaleString()}</p>
-        <p className="text-xs text-muted">{hint}</p>
+        <p className="font-heading text-5xl font-normal tracking-tight text-primary">{value.toLocaleString()}</p>
+        <p className="mt-2 text-xs text-muted">{hint}</p>
       </CardContent>
     </Card>
   );
@@ -139,8 +139,8 @@ export default async function InsightsPage({ params }: { params: Promise<{ id: s
             Back to dashboard
           </Link>
         </Button>
-        <h1 className="font-heading text-2xl font-semibold text-ink sm:text-3xl">Insights</h1>
-        <p className="text-sm text-muted">
+        <h1 className="mt-4 font-heading text-4xl font-normal tracking-tight text-ink sm:text-5xl">Every visit, a little joy.</h1>
+        <p className="mt-3 text-sm text-muted">
           {recipient} · {owner.status === "PUBLISHED" ? "Live" : owner.status} · created{" "}
           {formatDate(owner.createdAt)}
         </p>

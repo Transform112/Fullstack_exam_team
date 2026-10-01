@@ -130,7 +130,7 @@ export function WishesTable() {
           <div className="min-w-0 overflow-x-auto">
             <table className="w-full min-w-[760px] border-collapse text-left text-sm">
               <thead>
-                <tr className="text-xs uppercase tracking-wide text-muted">
+                <tr className="bg-canvas text-xs uppercase tracking-wide text-muted">
                   <th className="px-3 py-2 font-medium">Wish</th>
                   <th className="px-3 py-2 font-medium">From</th>
                   <th className="px-3 py-2 font-medium">Page</th>
@@ -151,7 +151,7 @@ export function WishesTable() {
                       </tr>
                     ))
                   : rows.map((row) => (
-                      <tr key={row.id} className="border-t border-border align-middle">
+                      <tr key={row.id} className="border-t border-border align-middle transition-colors hover:bg-canvas/60">
                         <td className="max-w-[280px] px-3 py-3">
                           <span className="block break-words text-ink">
                             {row.emoji ? `${row.emoji} ` : ""}

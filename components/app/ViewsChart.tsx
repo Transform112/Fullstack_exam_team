@@ -16,7 +16,7 @@ export type ViewsChartPoint = { date: string; views: number };
 export type ViewsChartProps = { data: ViewsChartPoint[] };
 
 // Short axis label such as "14 Oct" for a YYYY-MM-DD day key.
-function dayLabel(value: string | number) {
+function dayLabel(value: unknown) {
   const raw = String(value);
   const parsed = new Date(`${raw}T00:00:00Z`);
   if (Number.isNaN(parsed.getTime())) return raw;
@@ -47,11 +47,11 @@ export function ViewsChart({ data }: ViewsChartProps) {
         <AreaChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
           <defs>
             <linearGradient id="wishly-views-fill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#7C3AED" stopOpacity={0.45} />
-              <stop offset="100%" stopColor="#7C3AED" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="#442B46" stopOpacity={0.2} />
+              <stop offset="100%" stopColor="#442B46" stopOpacity={0.02} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#E9E4F5" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD1" vertical={false} />
           <XAxis
             dataKey="date"
             tickFormatter={dayLabel}
@@ -73,7 +73,7 @@ export function ViewsChart({ data }: ViewsChartProps) {
             type="monotone"
             dataKey="views"
             name="Views"
-            stroke="#7C3AED"
+            stroke="#442B46"
             strokeWidth={2}
             fill="url(#wishly-views-fill)"
           />

@@ -137,21 +137,24 @@ export function PageCard({ page, onChanged }: PageCardProps) {
   }
 
   return (
-    <Card className="flex h-full flex-col overflow-hidden">
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-canvas">
+    <Card className="group flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-canvas">
         {page.thumbnailUrl ? (
           <img
             src={page.thumbnailUrl}
             alt=""
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
           />
         ) : (
-          <div
-            aria-hidden
-            className="h-full w-full bg-gradient-to-br from-primary/25 via-accent/20 to-sunshine/30"
-          />
+          <div aria-hidden className="flex h-full items-center justify-center bg-primary/5 p-10 pt-16">
+            <div className="flex h-full w-full -rotate-3 flex-col items-center justify-center gap-3 border border-primary/20 bg-canvas p-4 text-primary shadow-sm">
+              <span className="text-[10px] uppercase tracking-[0.2em]">Made especially for</span>
+              <span className="max-w-full truncate font-heading text-3xl">{recipient}</span>
+              <span className="h-px w-10 bg-accent" />
+            </div>
+          </div>
         )}
         <div className="absolute left-3 right-3 top-3 flex flex-wrap gap-2">
           <Badge tone={STATUS_TONES[page.status]}>{STATUS_LABELS[page.status]}</Badge>
@@ -162,8 +165,8 @@ export function PageCard({ page, onChanged }: PageCardProps) {
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <h3 className="truncate font-heading text-lg font-semibold text-ink">{recipient}</h3>
-            <p className="text-sm text-muted">
+            <h3 className="truncate font-heading text-2xl font-normal text-ink">{recipient}</h3>
+            <p className="mt-1 text-xs text-muted">
               {page.stats.views} {page.stats.views === 1 ? "view" : "views"} ·{" "}
               {formatDate(page.createdAt)}
             </p>
@@ -248,6 +251,19 @@ export function PageCard({ page, onChanged }: PageCardProps) {
           <p className="rounded-xl bg-red-50 px-3 py-2 text-xs font-medium text-red-700">
             Disabled by admin
           </p>
+        ) : null}
+        {!disabled ? (
+          <div className="mt-auto flex items-center gap-2 border-t border-border pt-4">
+            <Button type="button" variant="outline" className="flex-1" onClick={() => router.push(`/pages/${page.id}/edit`)}>
+              <Pencil className="h-4 w-4" aria-hidden />
+              {page.status === "DRAFT" ? "Continue creating" : "Edit surprise"}
+            </Button>
+            {canOpen ? (
+              <Button type="button" variant="ghost" size="icon" onClick={openShare} aria-label={`Share ${recipient}'s surprise`}>
+                <Share2 className="h-4 w-4" aria-hidden />
+              </Button>
+            ) : null}
+          </div>
         ) : null}
       </div>
 

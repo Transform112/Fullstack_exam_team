@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="min-h-dvh bg-canvas font-body text-ink">
       <AppNav user={{ name: user.name, role: user.role }} />
-      <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:py-8">{children}</main>
+      <main className="container-page py-8 sm:py-12">{children}</main>
     </div>
   );
 }

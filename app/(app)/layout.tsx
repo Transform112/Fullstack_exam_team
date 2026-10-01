@@ -11,7 +11,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-dvh flex-col bg-canvas">
       <AppNav user={{ name: user.name, role: user.role }} />
-      <main className="container-page py-8">{children}</main>
+      <main className="container-page flex-1 py-8 sm:py-12">{children}</main>
+      <footer className="container-page border-t border-border py-6 text-xs text-muted">
+        Made for the people who mean everything. <span className="text-primary">Wishly studio</span>
+      </footer>
     </div>
   );
 }

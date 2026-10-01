@@ -53,7 +53,7 @@ export function ConfirmDialog({
         onOpenChange(next);
       }}
     >
-      <DialogContent className="max-w-sm" aria-busy={busy}>
+      <DialogContent className="max-w-sm">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description ? <DialogDescription>{description}</DialogDescription> : null}

@@ -20,14 +20,14 @@ export default function AppError({
 
   return (
     <main className="flex min-h-[100svh] flex-col items-center justify-center bg-canvas px-5 py-16 text-center">
-      <p className="font-heading text-[clamp(64px,18vw,120px)] font-bold leading-none text-ink/10">
+      <p className="font-heading text-[clamp(64px,18vw,120px)] font-normal leading-none text-primary/20">
         Oops
       </p>
       <h1 className="mt-2 font-heading text-2xl font-bold text-ink sm:text-3xl">
-        Something went wrong on our side
+        A little pause in the celebration.
       </h1>
       <p className="mt-3 max-w-md text-base text-muted">
-        Nothing you did caused this. Try again, and if it keeps happening come back in a minute.
+        We could not load this page. Please try again, or return home to keep exploring.
       </p>
 
       <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">

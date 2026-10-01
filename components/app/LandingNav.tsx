@@ -1,114 +1,209 @@
 "use client";
 
-// Public navbar for the marketing pages (docs/04 SECTION 8.1). It collapses into a
-// simple sheet under 768px and swaps Login for Dashboard when a session exists.
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Heart, Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Cake,
+  ChevronDown,
+  Flower2,
+  Heart,
+  Menu,
+  PartyPopper,
+  Sparkles,
+  X,
+} from "lucide-react";
+import { Brand } from "@/components/app/Brand";
 import { Button } from "@/components/ui/button";
 
-const LINKS = [
-  { href: "/#how-it-works", label: "How it works" },
-  { href: "/#templates", label: "Templates" },
-  { href: "/#faq", label: "FAQ" },
+const OCCASIONS = [
+  { href: "/occasions/birthday", label: "Birthdays", note: "Their day, made a little brighter", icon: Cake },
+  { href: "/occasions/anniversary", label: "Anniversaries", note: "Another chapter of your story", icon: Heart },
+  { href: "/occasions/friendship", label: "Friendship", note: "For your favourite kind of human", icon: Flower2 },
+  { href: "/occasions/farewell", label: "Farewells", note: "A keepsake for their next chapter", icon: PartyPopper },
+  { href: "/occasions/custom", label: "Just because", note: "The little moments count, too", icon: Sparkles },
 ];
 
 export function LandingNav({ loggedIn = false }: { loggedIn?: boolean }) {
-  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const [occasionOpen, setOccasionOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const disclosureRef = useRef<HTMLDivElement>(null);
+  const occasionButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileDialogRef = useRef<HTMLDialogElement>(null);
+  const createHref = loggedIn ? "/create" : "/signup";
 
-  // A sheet left open while the viewport grows would linger behind the desktop bar.
+  const active = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
+  // Route changes close disclosures, including browser history navigation.
+  useEffect(() => {
+    setOccasionOpen(false);
+    setMobileOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!occasionOpen) return;
+    const closeOutside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !disclosureRef.current?.contains(event.target)) {
+        setOccasionOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", closeOutside);
+    return () => document.removeEventListener("pointerdown", closeOutside);
+  }, [occasionOpen]);
+
+  // A native modal gives the small-screen navigation a real focus boundary.
+  useEffect(() => {
+    const dialog = mobileDialogRef.current;
+    if (!dialog) return;
+    if (mobileOpen && !dialog.open) dialog.showModal();
+    if (!mobileOpen && dialog.open) dialog.close();
+  }, [mobileOpen]);
+
   useEffect(() => {
     const onResize = () => {
-      if (window.innerWidth >= 768) setOpen(false);
+      if (window.innerWidth >= 960) setMobileOpen(false);
+      else setOccasionOpen(false);
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  function closeNavigation() {
+    setMobileOpen(false);
+    setOccasionOpen(false);
+  }
+
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-canvas/85 backdrop-blur-md">
-      <nav
-        className="container-page flex h-16 items-center justify-between gap-4"
-        aria-label="Main"
-      >
-        <Link href="/" className="flex items-center gap-2" aria-label="Wishly home">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent">
-            <Heart className="h-4 w-4 text-white" fill="currentColor" aria-hidden />
-          </span>
-          <span className="font-heading text-lg font-bold text-ink">Wishly</span>
-        </Link>
-
-        <ul className="hidden items-center gap-1 md:flex">
-          {LINKS.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="flex h-11 items-center rounded-full px-3 text-sm font-medium text-muted hover:text-ink"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="hidden items-center gap-2 md:flex">
-          <Link
-            href={loggedIn ? "/dashboard" : "/login"}
-            className="flex h-11 items-center rounded-full px-4 text-sm font-medium text-ink hover:bg-white/70"
-          >
-            {loggedIn ? "Dashboard" : "Login"}
+    <header id="site-top" className="studio-header" tabIndex={-1}>
+      <div className="studio-header-note">
+        <span>A little thought goes a long way.</span>
+        <Link href="/occasions">Find your reason to celebrate <ArrowUpRight size={12} aria-hidden /></Link>
+      </div>
+      <nav className="container-page studio-navigation" aria-label="Main navigation">
+        <Brand caption />
+        <div className="studio-navigation-links">
+          <Link href="/templates" className="studio-nav-link" aria-current={active("/templates") ? "page" : undefined}>
+            The collection
           </Link>
-          <Button asChild size="lg" className="h-11">
-            <Link href="/signup">Create a surprise</Link>
+          <div
+            className="occasion-disclosure"
+            ref={disclosureRef}
+            onBlur={(event) => {
+              if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) {
+                setOccasionOpen(false);
+              }
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape" && occasionOpen) {
+                event.preventDefault();
+                setOccasionOpen(false);
+                occasionButtonRef.current?.focus();
+              }
+            }}
+          >
+            <button
+              ref={occasionButtonRef}
+              type="button"
+              className="studio-nav-link"
+              aria-expanded={occasionOpen}
+              aria-controls="occasion-navigation"
+              data-active={active("/occasions") || undefined}
+              onClick={() => setOccasionOpen((value) => !value)}
+            >
+              Occasions
+              <ChevronDown size={13} aria-hidden className={occasionOpen ? "disclosure-chevron is-open" : "disclosure-chevron"} />
+            </button>
+            {occasionOpen && (
+              <div id="occasion-navigation" className="occasion-navigation">
+                <div className="occasion-navigation-intro">
+                  <p className="eyebrow">EVERY REASON, EVERY FEELING</p>
+                  <h2>Who’s on<br />your mind?</h2>
+                  <p>Start with a moment. We’ll help you find the words.</p>
+                  <Link href="/occasions" onClick={closeNavigation}>All occasion guides <ArrowRight size={15} aria-hidden /></Link>
+                </div>
+                <ul className="occasion-navigation-list">
+                  {OCCASIONS.map(({ href, label, note, icon: Icon }) => (
+                    <li key={href}>
+                      <Link href={href} onClick={closeNavigation} aria-current={pathname === href ? "page" : undefined}>
+                        <Icon size={19} strokeWidth={1.5} aria-hidden />
+                        <span><strong>{label}</strong><small>{note}</small></span>
+                        <ArrowUpRight size={14} aria-hidden />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+          <Link href="/#how-it-works" className="studio-nav-link">How it works</Link>
+          <Link href="/help" className="studio-nav-link" aria-current={active("/help") ? "page" : undefined}>A little help</Link>
+        </div>
+        <div className="studio-navigation-account">
+          <Link href={loggedIn ? "/dashboard" : "/login"} className="studio-login-link">
+            {loggedIn ? "My studio" : "Log in"}
+          </Link>
+          <Button asChild>
+            <Link href={createHref}>Create a surprise <ArrowUpRight size={15} aria-hidden /></Link>
           </Button>
         </div>
-
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="landing-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          className="flex h-11 w-11 items-center justify-center rounded-full text-ink hover:bg-white/70 md:hidden"
+          onClick={() => setMobileOpen(true)}
+          className="studio-mobile-toggle"
+          aria-label="Open menu"
+          aria-expanded={mobileOpen}
+          aria-controls="studio-mobile-navigation"
         >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <span>Menu</span><Menu size={20} aria-hidden />
         </button>
       </nav>
 
-      {open ? (
-        <div
-          id="landing-menu"
-          className="border-t border-border bg-canvas px-5 pb-6 pt-2 md:hidden"
-        >
-          <ul className="flex flex-col">
-            {LINKS.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="flex min-h-11 items-center py-3 text-base font-medium text-ink"
-                >
-                  {link.label}
+      <dialog
+        id="studio-mobile-navigation"
+        ref={mobileDialogRef}
+        className="studio-mobile-dialog"
+        aria-labelledby="mobile-navigation-title"
+        onCancel={() => setMobileOpen(false)}
+        onClose={() => setMobileOpen(false)}
+      >
+        <div className="studio-mobile-dialog-header">
+          <Brand onClick={closeNavigation} />
+          <button type="button" autoFocus onClick={closeNavigation} aria-label="Close menu" className="studio-mobile-close">
+            <X size={22} aria-hidden />
+          </button>
+        </div>
+        <nav aria-label="Mobile navigation" className="studio-mobile-content">
+          <p id="mobile-navigation-title" className="eyebrow">COME ON IN. MAKE SOMETHING LOVELY.</p>
+          <ul className="studio-mobile-primary">
+            {[
+              ["/templates", "The collection", "01"],
+              ["/occasions", "Find an occasion", "02"],
+              ["/#how-it-works", "How it works", "03"],
+              ["/help", "A little help", "04"],
+            ].map(([href, label, number]) => (
+              <li key={href}>
+                <Link href={href} onClick={closeNavigation} aria-current={active(href) ? "page" : undefined}>
+                  <small>{number}</small><span>{label}</span><ArrowUpRight size={19} aria-hidden />
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                href={loggedIn ? "/dashboard" : "/login"}
-                onClick={() => setOpen(false)}
-                className="flex min-h-11 items-center py-3 text-base font-medium text-ink"
-              >
-                {loggedIn ? "Dashboard" : "Login"}
-              </Link>
-            </li>
           </ul>
-          <Button asChild size="lg" className="mt-2 w-full">
-            <Link href="/signup" onClick={() => setOpen(false)}>
-              Create a surprise
-            </Link>
-          </Button>
-        </div>
-      ) : null}
+          <div className="studio-mobile-occasions">
+            <p className="eyebrow">A MOMENT WORTH MARKING</p>
+            <div>
+              {OCCASIONS.map(({ href, label }) => <Link key={href} href={href} onClick={closeNavigation}>{label}</Link>)}
+            </div>
+          </div>
+          <div className="studio-mobile-account">
+            <Button asChild size="lg"><Link href={createHref} onClick={closeNavigation}>Create a surprise <ArrowRight size={17} aria-hidden /></Link></Button>
+            <Link className="text-link" href={loggedIn ? "/dashboard" : "/login"} onClick={closeNavigation}>{loggedIn ? "Return to my studio" : "Already have an account? Log in"}</Link>
+          </div>
+        </nav>
+        <p className="studio-mobile-signoff">Little pages. Big feelings.</p>
+      </dialog>
     </header>
   );
 }

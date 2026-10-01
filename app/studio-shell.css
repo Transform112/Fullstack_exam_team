@@ -275,7 +275,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 22px;
+  padding: max(22px, env(safe-area-inset-top)) max(22px, env(safe-area-inset-right)) 22px max(22px, env(safe-area-inset-left));
   border-bottom: 1px solid #ddd7cd;
 }
 .studio-mobile-close {
@@ -346,7 +346,7 @@
   justify-content: center;
 }
 .studio-mobile-signoff {
-  padding: 0 24px 30px;
+  padding: 0 max(24px, env(safe-area-inset-right)) max(30px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
   color: #8b7569;
   font: italic 19px Georgia, serif;
 }

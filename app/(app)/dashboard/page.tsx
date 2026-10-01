@@ -68,7 +68,7 @@ export default function DashboardPage() {
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted">
             A little collection of big feelings. Create, finish and share something personal.
           </p>
-          <p className="mt-3 text-xs text-muted">
+          <p className="mt-3 text-xs text-muted" role="status" aria-live="polite" aria-atomic="true">
             {loading ? "Loading your collection…" : `${total} ${total === 1 ? "page" : "pages"}`} · up to 50 per account
           </p>
         </div>

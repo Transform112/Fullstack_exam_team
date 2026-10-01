@@ -12,7 +12,7 @@ export function MessageStarters({ starters }: { starters: OccasionGuide["starter
     try {
       await navigator.clipboard.writeText(text);
       setCopied(index);
-      setFeedback("Starter copied. Add your own memory to make it yours.");
+      setFeedback(`${starters[index].label} starter copied. Add your own memory to make it yours.`);
     } catch {
       setCopied(null);
       setFeedback("Copy is unavailable here. Select the message text to copy it manually.");

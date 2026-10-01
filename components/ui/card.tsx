@@ -62,7 +62,7 @@ export function Badge({
 }
 
 export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("animate-pulse rounded-xl bg-slate-200/70", className)} {...props} />;
+  return <div className={cn("max-w-full animate-pulse rounded-xl bg-slate-200/70", className)} {...props} />;
 }
 
 export function Separator({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {

@@ -200,7 +200,7 @@ export function MediaUploader({ pageId, onUploaded, disabled }: MediaUploaderPro
       />
 
       {rejections.length > 0 && (
-        <ul className="flex flex-col gap-1 rounded-card border border-red-200 bg-red-50 p-3">
+        <ul role="alert" className="flex flex-col gap-1 rounded-card border border-red-200 bg-red-50 p-3 [overflow-wrap:anywhere]">
           {rejections.map((message) => (
             <li key={message} className="text-xs font-medium text-red-700">
               {message}
@@ -234,7 +234,15 @@ export function MediaUploader({ pageId, onUploaded, disabled }: MediaUploaderPro
                   <ImageIcon className="h-3.5 w-3.5 shrink-0 text-muted" aria-hidden />
                   <p className="truncate text-sm text-ink">{task.name}</p>
                 </div>
-                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-border">
+                <div
+                  role="progressbar"
+                  aria-label={`Upload: ${task.name}`}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.round(task.progress * 100)}
+                  aria-valuetext={task.status === "error" ? (task.error ?? "Upload failed") : task.status === "queued" ? "Waiting to upload" : undefined}
+                  className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-border"
+                >
                   <div
                     className={`h-full w-full origin-left rounded-full ${
                       task.status === "error" ? "bg-red-500" : "bg-primary"

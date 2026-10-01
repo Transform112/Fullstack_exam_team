@@ -73,7 +73,7 @@ export function ConfirmDialog({
             onClick={confirm}
             disabled={busy}
           >
-            {busy ? "Working..." : confirmLabel}
+            <span role="status" aria-live="polite">{busy ? "Working..." : confirmLabel}</span>
           </Button>
         </div>
       </DialogContent>

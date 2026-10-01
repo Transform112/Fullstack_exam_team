@@ -1,21 +1,22 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Search, X } from "lucide-react";
 import { HELP_CATEGORIES, searchHelp, type HelpCategory } from "./help";
 
 export function HelpExplorer() {
   const searchId = useId();
+  const searchRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<HelpCategory>("All questions");
   const articles = useMemo(() => searchHelp(query, category), [query, category]);
-  function reset() { setQuery(""); setCategory("All questions"); }
+  function reset() { setQuery(""); setCategory("All questions"); searchRef.current?.focus(); }
 
   return (
     <section className="help-explorer" aria-label="Search help articles">
       <label className="help-search-label" htmlFor={searchId}>What would you like to know?</label>
-      <div className="help-search"><Search size={20} aria-hidden /><input id={searchId} type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Try password, photos or sharing" />{query ? <button type="button" aria-label="Clear help search" onClick={() => setQuery("")}><X size={18} /></button> : null}</div>
+      <div className="help-search"><Search size={20} aria-hidden /><input ref={searchRef} id={searchId} type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Try password, photos or sharing" />{query ? <button type="button" aria-label="Clear help search" onClick={() => { setQuery(""); searchRef.current?.focus(); }}><X size={18} /></button> : null}</div>
       <div className="help-layout">
         <fieldset className="help-categories"><legend>Browse by topic</legend>{HELP_CATEGORIES.map((item) => <button key={item} type="button" aria-pressed={category === item} onClick={() => setCategory(item)}>{item}<ArrowRight size={14} aria-hidden /></button>)}</fieldset>
         <div>

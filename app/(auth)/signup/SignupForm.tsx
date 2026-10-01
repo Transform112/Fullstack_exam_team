@@ -70,6 +70,8 @@ export function SignupForm() {
           type="email"
           inputMode="email"
           autoComplete="email"
+          autoCapitalize="none"
+          spellCheck={false}
           placeholder="you@example.com"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "signup-email-error" : undefined}

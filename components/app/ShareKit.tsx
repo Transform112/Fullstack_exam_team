@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/card";
 // qrcode.react draws on a browser canvas, so it is loaded only on the client (docs/03 P4-03).
 const QRCodeCanvas = dynamic(() => import("qrcode.react").then((module) => module.QRCodeCanvas), {
   ssr: false,
-  loading: () => <Skeleton className="h-[256px] w-[256px]" />,
+  loading: () => <Skeleton className="aspect-square w-[256px] max-w-full" />,
 });
 
 export type ShareKitProps = {
@@ -114,7 +114,7 @@ export function ShareKit({ url, recipientName, slug, qrCode }: ShareKitProps) {
       </div>
 
       <div className="flex flex-col items-center gap-3 rounded-card border border-border bg-canvas p-4">
-        <div ref={qrBoxRef} className="rounded-xl bg-white p-2">
+        <div ref={qrBoxRef} className="max-w-full rounded-xl bg-white p-2 [&_canvas]:max-w-full [&_canvas]:!h-auto">
           <QRCodeCanvas
             value={url}
             size={256}

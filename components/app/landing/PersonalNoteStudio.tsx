@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Heart, RotateCcw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,10 +28,22 @@ export function PersonalNoteStudio({ loggedIn = false }: { loggedIn?: boolean })
   const [name, setName] = useState("Riya");
   const [message, setMessage] = useState(STARTERS[0].message);
   const [tone, setTone] = useState(0);
+  const [previous, setPrevious] = useState<{ name: string; message: string; tone: number } | null>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
 
   function chooseTone(index: number) {
+    setPrevious({ name, message, tone });
     setTone(index);
     setMessage(STARTERS[index].message);
+  }
+
+  function undo() {
+    if (!previous) return;
+    setName(previous.name);
+    setMessage(previous.message);
+    setTone(previous.tone);
+    setPrevious(null);
+    messageRef.current?.focus();
   }
 
   function reset() {
@@ -87,6 +99,7 @@ export function PersonalNoteStudio({ loggedIn = false }: { loggedIn?: boolean })
             <div>
               <label htmlFor={`${id}-message`}>Make the words your own</label>
               <textarea
+                ref={messageRef}
                 id={`${id}-message`}
                 value={message}
                 maxLength={220}
@@ -98,6 +111,7 @@ export function PersonalNoteStudio({ loggedIn = false }: { loggedIn?: boolean })
                 <button type="button" onClick={reset}><RotateCcw size={12} aria-hidden /> Reset example</button>
                 <span id={`${id}-count`}>{message.length} / 220</span>
               </div>
+              {previous && <button type="button" className="text-link text-xs" onClick={undo}>Undo last example change</button>}
             </div>
           </div>
           <p id={`${id}-hint`} className="note-studio-hint">A little playground for your words. This example stays on this page and isn’t saved to an account.</p>

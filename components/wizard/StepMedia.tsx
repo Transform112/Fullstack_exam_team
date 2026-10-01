@@ -18,7 +18,7 @@ export function StepMedia() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-heading text-xl font-semibold text-ink">Photos and videos</h2>
+        <h2 className="font-heading text-2xl font-normal tracking-tight text-ink sm:text-3xl">Photos and videos</h2>
         <p className="mt-1 text-sm text-muted">
           Add up to 15 photos and 2 videos. Photos are resized in your browser before upload.
         </p>

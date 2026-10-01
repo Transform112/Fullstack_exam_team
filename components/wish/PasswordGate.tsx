@@ -47,7 +47,7 @@ export function PasswordGate({ slug, firstName }: { slug: string; firstName: str
   return (
     <div
       className="wish-root"
-      style={{ position: "relative", minHeight: "100svh", background: "#0F0A1E" }}
+      style={{ position: "relative", minHeight: "100svh", background: "#352c32" }}
     >
       <LockBackground firstName={firstName} />
       <div
@@ -101,7 +101,9 @@ export function PasswordGate({ slug, firstName }: { slug: string; firstName: str
           <form onSubmit={submit}>
             <input
               type="password"
-              autoFocus
+              autoComplete="current-password"
+              aria-invalid={!!error}
+              aria-describedby={error ? "wish-password-error" : undefined}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               aria-label={translate("ENGLISH", "lock.password.input")}
@@ -123,9 +125,9 @@ export function PasswordGate({ slug, firstName }: { slug: string; firstName: str
                 width: "100%",
                 height: 48,
                 marginTop: 14,
-                borderRadius: 9999,
+                borderRadius: 10,
                 border: "none",
-                background: "linear-gradient(135deg, #7C3AED, #EC4899)",
+                background: "#70566f",
                 color: "#FFFFFF",
                 fontSize: 16,
                 fontWeight: 600,
@@ -133,12 +135,12 @@ export function PasswordGate({ slug, firstName }: { slug: string; firstName: str
                 cursor: pending ? "wait" : "pointer",
               }}
             >
-              {pending ? "..." : translate("ENGLISH", "lock.password.button")}
+              {pending ? "Opening your surprise…" : translate("ENGLISH", "lock.password.button")}
             </button>
           </form>
 
           {error ? (
-            <p style={{ margin: "12px 0 0", color: "#FCA5A5", fontSize: 14 }} role="alert">
+            <p id="wish-password-error" style={{ margin: "12px 0 0", color: "#FCA5A5", fontSize: 14 }} role="alert">
               {error}
             </p>
           ) : null}

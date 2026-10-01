@@ -23,7 +23,7 @@ export function StepRecipient() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-heading text-xl font-semibold text-ink">Who is this for?</h2>
+        <h2 className="font-heading text-2xl font-normal tracking-tight text-ink sm:text-3xl">Who is this for?</h2>
         <p className="mt-1 text-sm text-muted">Their name leads the greeting on the page.</p>
       </div>
 

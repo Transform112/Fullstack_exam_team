@@ -78,9 +78,9 @@ export function StatsCards() {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {CARDS.map((card) => (
         <Card key={card.key}>
-          <CardContent className="flex flex-col gap-1 p-5">
-            <span className="text-sm font-medium text-muted">{card.label}</span>
-            <span className="font-heading text-3xl font-semibold text-ink">
+          <CardContent className="flex flex-col gap-3 p-6">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">{card.label}</span>
+            <span className="font-heading text-5xl font-normal tracking-tight text-primary">
               {stats[card.key].toLocaleString()}
             </span>
             <span className="text-xs text-muted">{card.hint}</span>

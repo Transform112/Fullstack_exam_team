@@ -31,15 +31,15 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "flex flex-col items-center gap-3 rounded-card border border-dashed border-border bg-white px-6 py-12 text-center",
+        "flex flex-col items-center gap-5 rounded-card border border-border bg-white px-6 py-16 text-center sm:py-20",
         className,
       )}
     >
-      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-canvas text-primary">
+      <span className="flex h-16 w-16 -rotate-6 items-center justify-center rounded-2xl border border-border bg-canvas text-primary">
         {icon ?? <Sparkles className="h-6 w-6" aria-hidden />}
       </span>
-      <h2 className="font-heading text-lg font-semibold text-ink">{title}</h2>
-      {description ? <p className="max-w-sm text-sm text-muted">{description}</p> : null}
+      <h2 className="font-heading text-3xl font-normal tracking-tight text-ink">{title}</h2>
+      {description ? <p className="max-w-sm text-sm leading-relaxed text-muted">{description}</p> : null}
       {showAction && actionLabel ? (
         actionHref ? (
           <Button asChild>

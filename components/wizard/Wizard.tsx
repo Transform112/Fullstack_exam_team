@@ -662,12 +662,19 @@ export function Wizard({ initialPage, mode, userId: initialUserId }: WizardProps
 
   return (
     <WizardContext.Provider value={context}>
-      <div className="container-page py-6">
+      <div className="py-2">
+        <header className="mb-8 max-w-2xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">The Wishly studio</p>
+          <h1 className="mt-3 font-heading text-4xl tracking-tight text-ink sm:text-5xl">
+            {mode === "edit" ? "Make it even more personal." : "A little effort. A big feeling."}
+          </h1>
+          <p className="mt-3 text-sm leading-relaxed text-muted">Build your surprise one step at a time. Your preview changes as you create; you choose when to publish.</p>
+        </header>
         <WizardProgress step={step} onStepClick={goStep} />
 
         <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-start">
-          <div className="min-w-0 flex-1 pb-24 lg:pb-6">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <div className="min-w-0 flex-1 rounded-card border border-border bg-white p-4 pb-24 sm:p-6 lg:pb-6">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-2 border-b border-border pb-4">
               <span aria-live="polite" className="text-xs font-medium text-muted">
                 {statusLabel[saveState]}
               </span>
@@ -754,18 +761,18 @@ export function Wizard({ initialPage, mode, userId: initialUserId }: WizardProps
                 </AnimatePresence>
               </motion.div>
 
-              <div className="mt-6 flex items-center justify-between gap-3">
+              <div className="mt-8 flex items-center justify-between gap-3 border-t border-border pt-6">
                 <Button type="button" variant="outline" onClick={back} disabled={step === 1}>
                   Back
                 </Button>
                 <Button type="submit" disabled={saving} className="min-w-[7rem]">
-                  {saving ? "Saving..." : step === 6 ? "Review and generate" : "Next"}
+                  {saving ? "Saving..." : step === 6 ? "Review and generate" : "Continue"}
                 </Button>
               </div>
             </form>
           </div>
 
-          <div className="hidden lg:sticky lg:top-6 lg:flex lg:h-[calc(100vh-3rem)] lg:w-[400px] lg:shrink-0 lg:flex-col">
+          <div className="hidden lg:sticky lg:top-24 lg:flex lg:h-[calc(100vh-7rem)] lg:w-[360px] lg:shrink-0 lg:flex-col">
             <PreviewPane data={data} className="h-full" />
           </div>
         </div>

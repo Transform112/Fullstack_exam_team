@@ -47,14 +47,15 @@ export function AppNav({ user }: { user: AppNavUser }) {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur">
-      <div className="container-page flex min-h-16 items-center justify-between gap-2">
+    <header className="sticky top-0 z-40 border-b border-border bg-canvas">
+      <div className="container-page flex min-h-20 items-center justify-between gap-3">
         <Link
           href="/dashboard"
           onClick={() => setOpen(false)}
-          className="flex h-11 items-center font-heading text-xl font-semibold text-primary"
+          className="flex h-11 items-center gap-2 font-heading text-3xl tracking-tight text-primary"
         >
-          Wishly
+          <Sparkles className="h-5 w-5" aria-hidden />
+          wishly<span className="text-accent">.</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
@@ -64,8 +65,8 @@ export function AppNav({ user }: { user: AppNavUser }) {
               href={href}
               aria-current={isActive(href) ? "page" : undefined}
               className={cn(
-                "flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-ink hover:bg-canvas",
-                isActive(href) && "bg-canvas text-primary",
+                "flex h-11 items-center gap-2 rounded-lg px-4 text-sm font-medium text-muted hover:bg-white hover:text-primary",
+                isActive(href) && "bg-primary/10 text-primary",
               )}
             >
               <Icon className="h-4 w-4" aria-hidden />
@@ -75,7 +76,7 @@ export function AppNav({ user }: { user: AppNavUser }) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <span className="hidden max-w-[10rem] truncate text-sm text-muted sm:block">
+          <span className="hidden max-w-[10rem] truncate border-r border-border pr-4 text-sm text-muted sm:block">
             {user.name}
           </span>
           <Button

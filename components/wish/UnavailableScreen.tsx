@@ -8,28 +8,28 @@ export function UnavailableScreen() {
   return (
     <main
       className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-5 py-16 text-center"
-      style={{ background: "#0F0A1E" }}
+      style={{ background: "#352c32" }}
     >
       <div
         aria-hidden
         className="pointer-events-none absolute -left-24 -top-24 h-[420px] w-[420px] rounded-full"
-        style={{ background: "#7C3AED", opacity: 0.28, filter: "blur(80px)" }}
+        style={{ background: "#70566f", opacity: 0.28, filter: "blur(80px)" }}
       />
       <div
         aria-hidden
         className="pointer-events-none absolute -bottom-32 -right-20 h-[360px] w-[360px] rounded-full"
-        style={{ background: "#EC4899", opacity: 0.28, filter: "blur(80px)" }}
+        style={{ background: "#b97668", opacity: 0.28, filter: "blur(80px)" }}
       />
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{ background: "#4F46E5", opacity: 0.22, filter: "blur(80px)" }}
+        style={{ background: "#738169", opacity: 0.22, filter: "blur(80px)" }}
       />
 
       <div className="relative mx-auto flex max-w-md flex-col items-center gap-4">
         <span
           className="flex h-[72px] w-[72px] items-center justify-center rounded-full"
-          style={{ background: "linear-gradient(135deg, #7C3AED, #EC4899)" }}
+          style={{ background: "#70566f" }}
         >
           <Ghost className="h-8 w-8 text-white" aria-hidden />
         </span>
@@ -45,7 +45,7 @@ export function UnavailableScreen() {
         <Link
           href="/signup"
           className="mt-2 flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold text-white transition-transform active:scale-[0.97]"
-          style={{ background: "linear-gradient(135deg, #7C3AED, #EC4899)" }}
+          style={{ background: "#70566f" }}
         >
           Create your own surprise
         </Link>

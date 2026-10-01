@@ -148,7 +148,7 @@ export function PagesTable() {
           <div className="min-w-0 overflow-x-auto">
             <table className="w-full min-w-[720px] border-collapse text-left text-sm">
               <thead>
-                <tr className="text-xs uppercase tracking-wide text-muted">
+                <tr className="bg-canvas text-xs uppercase tracking-wide text-muted">
                   <th className="px-3 py-2 font-medium">Recipient</th>
                   <th className="px-3 py-2 font-medium">Owner</th>
                   <th className="px-3 py-2 font-medium">Status</th>
@@ -169,7 +169,7 @@ export function PagesTable() {
                       </tr>
                     ))
                   : rows.map((row) => (
-                      <tr key={row.id} className="border-t border-border align-middle">
+                      <tr key={row.id} className="border-t border-border align-middle transition-colors hover:bg-canvas/60">
                         <td className="px-3 py-3">
                           <span className="block font-medium text-ink">
                             {row.recipientName || "Untitled"}

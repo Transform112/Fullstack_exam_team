@@ -17,15 +17,15 @@ export function WizardProgress({ step, onStepClick }: WizardProgressProps) {
   const percent = Math.round((step / STEPS.length) * 100);
 
   return (
-    <div className="w-full">
-      <div className="mb-2 flex items-end justify-between gap-3">
+    <div className="min-w-0 w-full rounded-card border border-border bg-white px-2 py-5 sm:px-6">
+      <div className="mb-4 flex items-end justify-between gap-3">
         <div>
-          <p className="font-heading text-sm font-semibold text-ink">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">
             Step {step} of {STEPS.length}
           </p>
-          <p className="text-xs text-muted">{STEPS[step - 1]?.label}</p>
+          <p className="mt-1 font-heading text-2xl text-ink">{STEPS[step - 1]?.label}</p>
         </div>
-        <span className="text-xs font-medium text-muted">{percent}% complete</span>
+        <span className="text-xs font-medium text-muted">{STEPS.length - step} {STEPS.length - step === 1 ? "step" : "steps"} after this</span>
       </div>
 
       <div
@@ -34,7 +34,7 @@ export function WizardProgress({ step, onStepClick }: WizardProgressProps) {
         aria-valuemax={100}
         aria-valuenow={percent}
         aria-label="Wizard progress"
-        className="h-2 w-full overflow-hidden rounded-full bg-border"
+        className="h-1 w-full overflow-hidden rounded-full bg-border"
       >
         <motion.div
           className="h-full w-full origin-left rounded-full bg-primary"
@@ -44,13 +44,13 @@ export function WizardProgress({ step, onStepClick }: WizardProgressProps) {
         />
       </div>
 
-      <ol className="mt-3 flex items-center justify-between gap-1">
+      <ol className="mt-3 flex items-center justify-between gap-0 overflow-x-auto p-1 sm:gap-1">
         {STEPS.map((s) => {
           const done = s.key < step;
           const current = s.key === step;
           const clickable = done && !!onStepClick;
           return (
-            <li key={s.key} className="flex flex-1 flex-col items-center gap-1">
+            <li key={s.key} className="flex min-w-11 flex-1 flex-col items-center gap-1">
               <motion.button
                 type="button"
                 disabled={!clickable}
@@ -63,7 +63,7 @@ export function WizardProgress({ step, onStepClick }: WizardProgressProps) {
               >
                 <span
                   className={[
-                    "flex h-6 w-6 items-center justify-center rounded-full border text-[11px] font-semibold transition-colors",
+                    "flex h-8 w-8 items-center justify-center rounded-lg border text-xs font-semibold transition-colors",
                     current
                       ? "border-primary bg-primary text-white"
                       : done

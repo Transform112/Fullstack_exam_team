@@ -29,7 +29,7 @@ export function ErrorState({
         <AlertTriangle className="h-6 w-6" aria-hidden />
       </span>
       <h2 className="font-heading text-2xl font-normal text-ink">{title}</h2>
-      <p className="max-w-md text-sm leading-relaxed text-muted">{message}</p>
+      <p className="min-w-0 max-w-full sm:max-w-md [overflow-wrap:anywhere] text-sm leading-relaxed text-muted">{message}</p>
       {onRetry ? (
         <Button type="button" variant="outline" onClick={onRetry}>
           <RotateCw className="h-4 w-4" aria-hidden />

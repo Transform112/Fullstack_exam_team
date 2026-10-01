@@ -4,7 +4,9 @@ import { connectDB } from "@/lib/db";
 import { Template } from "@/models/Template";
 import { LandingNav } from "@/components/app/LandingNav";
 import { SiteFooter } from "@/components/app/landing/SiteFooter";
-import { TemplateCard, type TemplateCardData } from "@/components/app/TemplatePreviewDialog";
+import type { TemplateCardData } from "@/components/app/TemplatePreviewDialog";
+import { TemplateExplorer } from "@/components/app/TemplateExplorer";
+import "./template-discovery.css";
 
 export const metadata: Metadata = {
   title: "Templates - Wishly",
@@ -18,21 +20,21 @@ const FALLBACK_TEMPLATES: TemplateCardData[] = [
     id: "neon-night",
     name: "Neon Night",
     description:
-      "Party and Gen-Z. Glowing neon text, starfield parallax, glitch reveal, confetti cannon.",
+      "A bold midnight palette with bright pink details. For a celebration with a little extra energy.",
     palette: ["#0B0420", "#FF4FA3", "#22D3EE", "#A78BFA"],
     accent: "#FF4FA3",
   },
   {
     id: "pastel-dream",
     name: "Pastel Dream",
-    description: "Soft and cute. Floating balloons, polaroid gallery, hand-drawn doodles, petals.",
+    description: "Soft blush tones and a playful, heartfelt feel. A lovely way to celebrate your favourite person.",
     palette: ["#FFF1F5", "#FBCFE8", "#C4B5FD", "#FDE68A"],
     accent: "#F472B6",
   },
   {
     id: "royal-gold",
     name: "Royal Gold",
-    description: "Elegant. Gold foil shimmer, slow parallax, rose petals, letter-opening intro.",
+    description: "Rich dark tones and warm golden accents. An elegant setting for words worth keeping.",
     palette: ["#0E0E10", "#D4AF37", "#F5E6C8", "#7F1D1D"],
     accent: "#D4AF37",
   },
@@ -64,21 +66,17 @@ export default async function TemplatesPage() {
       <LandingNav loggedIn={!!user} />
 
       <main className="container-page py-14 sm:py-20">
-        <header className="mx-auto max-w-2xl text-center">
-          <h1 className="text-[clamp(32px,6vw,52px)] font-bold leading-tight text-ink">
-            Templates
+        <header className="mx-auto max-w-2xl text-center"><p className="eyebrow justify-center">THE CELEBRATION COLLECTION</p>
+          <h1 className="mt-4 text-[clamp(38px,6vw,60px)] font-normal leading-tight text-ink">
+            Find their kind of lovely.
           </h1>
           <p className="mt-3 text-base text-muted">
-            Three looks, endless surprises. Open a full preview, then use the one that fits your
-            person.
+            Three distinct moods, one very special person. Preview a design and find the one for your
+            next celebration.
           </p>
         </header>
 
-        <div className="mt-12 flex flex-wrap justify-center gap-6">
-          {templates.map((template) => (
-            <TemplateCard key={template.id} template={template} />
-          ))}
-        </div>
+        <TemplateExplorer templates={templates} />
       </main>
 
       <SiteFooter />

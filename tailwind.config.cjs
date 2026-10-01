@@ -6,4 +6,3 @@ module.exports = {
  borderRadius:{card:'12px'}, boxShadow:{card:'0 4px 20px rgba(68,43,70,.045)'}
  }}, plugins: []
 };
-
